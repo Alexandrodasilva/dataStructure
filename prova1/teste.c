@@ -25,9 +25,9 @@ Fila* criaFila(void){
 	return f;
 }
  
-void liberaFila(Fila* fi){ 
+/*void liberaFila(Fila* fi){ 
 	if(fi != NULL){
-		struct funcionario* mo; 
+		elem* mo; 
 		while(fi-> inicio != NULL){
 			mo = fi->inicio;
 			fi->inicio = fi->inicio->prox;
@@ -35,7 +35,7 @@ void liberaFila(Fila* fi){
 		}
 		free(fi);
 	}
-}
+}*/
 int FilaVazia(Fila* fi){
 	if(fi == NULL){
 		return 1;
@@ -72,7 +72,7 @@ void ImprimeFila(Fila* fi){
 	struct funcionario *p = fi->inicio;
 	printf("fila de funcionarios:\n");
 	if(FilaVazia(fi)){
-		printf("lista vazia!!");
+		return;
 	}
     while(p != NULL){
         printf("%s %d %d \n", p->nome, p->id, p->idade);
@@ -90,8 +90,7 @@ int main(){
 	InseriFila(fi, "gol", 9870, 22); 
 	InseriFila(fi, "venom", 7569, 20);
 	ImprimeFila(fi);
-    liberaFila(fi);
- 	ImprimeFila(fi);
+    
   printf("\n");
 	return(0);
 }
