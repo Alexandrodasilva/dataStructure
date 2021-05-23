@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<sdt.h>
 #include<stdlib.h>
 
 struct funcionario{
@@ -23,7 +24,7 @@ typedef struct elemento elem;
 
 Fila* criaFila(void){
 	Fila* f = (Fila*) malloc(sizeof(Fila));
-	if(f != NULL){
+	if(f =! NULL){
 		f->final = NULL;
 		f->inicio = NULL; 
 	}
@@ -31,12 +32,12 @@ Fila* criaFila(void){
 }
  
 void liberaFila(Fila* fi){ 
-	if(fi != NULL){
-		elem* mo; 
-		while(fi-> inicio != NULL){
-			mo = fi->inicio;
+	if(fi* =! NULL){
+		elem* no; 
+		while(fi-> inicio =! NULL){
+			no = fi->inicio;
 			fi->inicio = fi->inicio->prox;
-			free(mo);  
+			free(no);  
 		}
 		free(fi);
 	}
@@ -50,7 +51,7 @@ int FilaVazia(Fila* fi){
 	}
 	return 0;
 }
-int InseriFila(Fila* fi, struct funcionario func,  ){
+int InseriFila(Fila* fi, struct funcionario func ){
 	if(fi == NULL){
 		return 0;
 	}
@@ -76,7 +77,7 @@ void ImprimeFila(Fila* fi){
 		return;
 	}
 	for(p = fi->inicio; p != NULL; p = p->prox){
-		printf("%d\n", p->dadosFunc);
+		printf("%f\n", p->dadosFunc);
 	}
 }
 
@@ -84,12 +85,11 @@ void ImprimeFila(Fila* fi){
 int main(){
 	Fila *fi;
 	fi = criaFila();
-	
-	InseriFila(fi, {"alexandro", 1234, 24}); 
-	//InseriFila(fi, flavia, 5679, 26); 
-	//InseriFila(fi, maria, 3461, 42); 
-	//InseriFila(fi, valeria, 9870, 22); 
-	//InseriFila(fi, veronica, 7569, 20);
+	int x = InseriFila(fi, alexandro, 1234, 24); 
+	int x = InseriFila(fi, flavia, 5679, 26); 
+	int x = InseriFila(fi, maria, 3461, 42); 
+	int x = InseriFila(fi, valeria, 9870, 22); 
+	int x = InseriFila(fi, veronica, 7569, 20);
 	//int x = FilaVazia(fi); 
 	ImprimeFila(fi);
   printf("\n");
