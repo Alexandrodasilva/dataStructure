@@ -72,18 +72,70 @@ void ImprimeFila(Fila* fi){
 	struct funcionario *p = fi->inicio;
 	printf("fila de funcionarios:\n");
 	if(FilaVazia(fi)){
-		printf("lista vazia!!");
+		printf("lista vazia");
 	}
     while(p != NULL){
-        printf("%s %d %d \n", p->nome, p->id, p->idade);
+        printf("funcionário de nome %s (ID = %d; IDADE: %d) Cadastrado; \n", p->nome, p->id, p->idade);
         p = p->prox;
     }
 }
 
+//-----------------------------pilha de carro-------------------------------------------------------------
+struct carro{
+    int placa;
+    struct carro *prox;
+};
+typedef struct carro Carro;
+
+struct pilhac{
+    Carro *topo;
+};
+typedef struct pilhac pilhaC;
+
+pilhaC* criarPilha(){
+    pilhaC *pi = (pilhaC*) malloc(sizeof(pilhaC));
+    if(pi != NULL){
+        pi->topo =NULL;
+    }
+    return pi;
+}
+
+void empilharC(pilhaC *pi, int num){
+    Carro *c = (Carro*) malloc(sizeof(Carro));
+    c->placa = num;
+    c->prox = pi->topo;
+    pi->topo = c;
+}
+
+void imprimir(pilhaC *pi){
+    Carro *aux = pi->topo;
+    if(aux == NULL){
+        printf("a pilha de carro está vazia !!\n");
+        return;
+    }else{
+         while(aux != NULL){
+             printf("%d \n", aux->placa);
+             aux = aux->prox;
+         }
+    }
+} 
+
+int desempilhar(pilhaC *pi){
+    Carro *aux = pi->topo;
+    int placa;
+    if(aux == NULL){
+        return(printf("A pilha de carro já se encotra  vazio !!\n"));
+    }else{
+         pi->topo = aux->prox;
+        free(aux);
+    }
+}
 
 int main(){
 	Fila *fi;
+	pilhaC *pi;
 	fi = criaFila();
+	pi = criarPilha();
 	InseriFila(fi,"alexandro", 1234, 24); 
 	InseriFila(fi, "alex", 5679, 26); 
 	InseriFila(fi, "sandro", 3461, 42); 
@@ -92,6 +144,22 @@ int main(){
 	ImprimeFila(fi);
     liberaFila(fi);
  	ImprimeFila(fi);
+	printf("\n");
+	printf("\n");
+	 empilharC(pi, 10);
+    empilharC(pi, 23);
+    empilharC(pi, 33);
+    empilharC(pi, 49);
+    imprimir(pi);
+    printf("\n");
+    printf("desempilhando o último\n",desempilhar(pi));
+    imprimir(pi);
+    printf("desempilhando o último\n",desempilhar(pi));
+    imprimir(pi);
+    printf("desempilhando o último\n",desempilhar(pi));
+    imprimir(pi);
+    printf("desempilhando o último\n",desempilhar(pi));
+    imprimir(pi);
   printf("\n");
 	return(0);
 }
