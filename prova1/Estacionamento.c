@@ -2,18 +2,18 @@
 #include<stdlib.h>
 #include<string.h>
 
-struct funcionario{
+typedef struct funcionario{
 char nome[50];
 int id;
 int idade;
 struct funcionario *prox;
-};
+}Funcionario;
 
 typedef struct fila Fila;
 
 struct fila{
-	struct funcionario *inicio;
-	struct funcionario *final;
+	Funcionario *inicio;
+	Funcionario *final;
 };
 
 Fila* criaFila(void){
@@ -27,11 +27,11 @@ Fila* criaFila(void){
  
 void liberaFila(Fila* fi){ 
 	if(fi != NULL){
-		struct funcionario* mo; 
+		Funcionario* No; 
 		while(fi-> inicio != NULL){
-			mo = fi->inicio;
+			No = fi->inicio;
 			fi->inicio = fi->inicio->prox;
-			free(mo);  
+			free(No);  
 		}
 		free(fi);
 	}
@@ -46,9 +46,9 @@ int FilaVazia(Fila* fi){
 	return 0;
 }
 void InseriFila(Fila* fi, char *NOME, int ID, int IDADE){
-    struct funcionario  *no;
-    struct funcionario *aux = fi->final;
-	no = (struct funcionario*) malloc(sizeof( struct funcionario));
+    Funcionario  *no;
+    Funcionario *aux = fi->final;
+	no = (Funcionario*) malloc(sizeof( Funcionario));
 	if(no == NULL){
 		return;
 	}
@@ -69,15 +69,109 @@ void InseriFila(Fila* fi, char *NOME, int ID, int IDADE){
 }
 
 void ImprimeFila(Fila* fi){
-	struct funcionario *p = fi->inicio;
+	Funcionario *p = fi->inicio;
 	printf("fila de funcionarios:\n");
 	if(FilaVazia(fi)){
 		printf("lista vazia");
 	}
     while(p != NULL){
-        printf("funcionário de nome %s (ID = %d; IDADE: %d) Cadastrado; \n", p->nome, p->id, p->idade);
+        printf("nome: %s (ID = %d; IDAD: %d) ; \n", p->nome, p->id, p->idade);
+       printf("\n");
         p = p->prox;
     }
+}
+
+void   ordenarID(Fila* fi){
+    Funcionario *aux = fi->inicio;
+    Funcionario *aux2;
+	char NOME[50];
+    int ID;
+	int IDADE;	
+    while(aux != NULL){
+        aux2 = aux->prox;
+        while(aux2 != NULL){
+    		 if((aux->id) > (aux2->id)){	 
+                strcpy( NOME, aux->nome); 
+				IDADE = aux->idade;
+				ID = aux->id;
+
+                strcpy(aux->nome, aux2->nome);
+				aux->idade = aux2->idade; 
+				aux->id = aux2->id;
+
+				strcpy(aux2->nome, NOME);
+				aux2->idade = IDADE; 
+                aux2->id = ID;
+            }
+            aux2 = aux2->prox;
+        }
+        aux = aux->prox;
+		
+    }
+    return(fi);
+	
+}
+
+void   ordenarIDADE(Fila* fi){
+    Funcionario *aux = fi->inicio;
+    Funcionario *aux2;
+	char NOME[50];
+    int ID;
+	int IDADE;	
+    while(aux != NULL){
+        aux2 = aux->prox;
+        while(aux2 != NULL){
+    		 if((aux->idade) > (aux2->idade)){	 
+                strcpy( NOME, aux->nome); 
+				ID = aux->id;
+				IDADE = aux->idade;
+
+               	strcpy(aux->nome, aux2->nome); 
+				aux->id = aux2->id;
+				aux->idade = aux2->idade;
+
+				strcpy(aux2->nome, NOME);
+                aux2->id = ID;
+				aux2->idade = IDADE; 
+            }
+            aux2 = aux2->prox;
+        }
+        aux = aux->prox;
+		
+    }
+    return(fi);
+	
+}
+
+void   ordenarNOME(Fila* fi){
+    Funcionario *aux = fi->inicio;
+    Funcionario *aux2;
+	char NOME[50];
+    int ID;
+	int IDADE;	
+    while(aux != NULL){
+        aux2 = aux->prox;
+        while(aux2 != NULL){
+			if(strcmp(aux->nome,aux2->nome) > 0){	 
+                strcpy( NOME, aux->nome); 
+				ID = aux->id;
+				IDADE = aux->idade;
+
+               	strcpy(aux->nome, aux2->nome); 
+				aux->id = aux2->id;
+				aux->idade = aux2->idade;
+
+				strcpy(aux2->nome, NOME);
+                aux2->id = ID;
+				aux2->idade = IDADE; 
+            }
+            aux2 = aux2->prox;
+        }
+        aux = aux->prox;
+		
+    }
+    return(fi);
+	
 }
 
 //-----------------------------pilha de carro-------------------------------------------------------------
@@ -122,7 +216,7 @@ void imprimir(pilhaC *pi){
 
 int desempilhar(pilhaC *pi){
     Carro *aux = pi->topo;
-    int placa;
+    //int placa;
     if(aux == NULL){
         return(printf("A pilha de carro já se encotra  vazio !!\n"));
     }else{
@@ -141,6 +235,7 @@ int main(){
 	InseriFila(fi, "sandro", 3461, 42); 
 	InseriFila(fi, "gol", 9870, 22); 
 	InseriFila(fi, "venom", 7569, 20);
+    ordenarNOME(fi);
 	ImprimeFila(fi);
     liberaFila(fi);
  	ImprimeFila(fi);
