@@ -51,14 +51,87 @@ int desempilhar(pilhaC *pi){
         free(aux);
     }
 }
-void procurar(){
-    
+
+
+int busca(pilhaC *pi, int NUM ){
+
+    Carro *aux = pi->topo;
+    if(aux == NULL){
+        return(printf("A pilha de carro já se encotra  vazio !!\n"));
+    }
+   
+    else{
+        while(aux != NULL){
+            if(NUM == aux){
+                free(aux);
+            }else{
+               // EMPILHA(p, num);
+                //num = aux;
+               //empilharC(pilhaC *pi, int num)
+            }
+            aux = aux->prox;
+        }
+    } 
 }
+
+//-----------------outra estrutura---------------------------------------------
+
+struct car{
+    int plac;
+    struct car *proximo;
+};
+typedef struct car Car;
+
+struct pilha{
+    Car *TOPO;
+};
+
+typedef struct pilha pilha;
+
+pilha* CRIAR(){
+    pilha *p = (pilha*) malloc(sizeof(pilha));
+    if(p != NULL){
+        p->TOPO =NULL;
+    }
+    return p;
+}
+
+void EMPILHA(pilha *p, int num){
+    Car *ca = (Car*) malloc(sizeof(Carro));
+    ca->plac = num;
+    ca->proximo = p->TOPO;
+    p->TOPO = ca;
+}
+
+void IMPRIMI(pilha *p){
+    Car *aux = p->TOPO;
+    if(aux == NULL){
+        printf("a pilha de carro está vazia !!\n");
+        return;
+    }else{
+         while(aux != NULL){
+             printf("%d \n", aux->plac);
+             aux = aux->proximo;
+         }
+    }
+} 
+
+int DESEMPILHA(pilha *p){
+    Car *aux = p->TOPO;
+    //int placa;
+    if(aux == NULL){
+        return(printf("A pilha de carro já se encotra  vazio !!\n"));
+    }else{
+         p->TOPO = aux->proximo;
+        free(aux);
+    }
+}
+
+
 
 int main(){
 
 	pilhaC *pi;
-
 	pi = criarPilha();
 	printf("\n");
 	printf("\n");
@@ -76,6 +149,6 @@ int main(){
     imprimir(pi);
     printf("desempilhando o último\n",desempilhar(pi));
     imprimir(pi);
-  printf("\n");
+
 	return(0);
 }

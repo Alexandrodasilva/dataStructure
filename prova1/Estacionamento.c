@@ -70,18 +70,19 @@ void InseriFila(Fila* fi, char *NOME, int ID, int IDADE){
 
 void ImprimeFila(Fila* fi){
 	Funcionario *p = fi->inicio;
-	printf("fila de funcionarios:\n");
+	//printf("fila de funcionarios:\n");
 	if(FilaVazia(fi)){
 		printf("lista vazia");
 	}
     while(p != NULL){
-        printf("nome: %s (ID = %d; IDAD: %d) ; \n", p->nome, p->id, p->idade);
-       printf("\n");
+        printf("\nFuncionario de nome: %s (ID = %d; IDAD: %d) cadastrado; \n", p->nome, p->id, p->idade);
+        printf("\n");
         p = p->prox;
     }
 }
 
 void   ordenarID(Fila* fi){
+    printf("Ordenação usada: ID;\n");
     Funcionario *aux = fi->inicio;
     Funcionario *aux2;
 	char NOME[50];
@@ -113,6 +114,7 @@ void   ordenarID(Fila* fi){
 }
 
 void   ordenarIDADE(Fila* fi){
+    printf("Ordenação usada: IDADE;\n");
     Funcionario *aux = fi->inicio;
     Funcionario *aux2;
 	char NOME[50];
@@ -144,6 +146,7 @@ void   ordenarIDADE(Fila* fi){
 }
 
 void   ordenarNOME(Fila* fi){
+    printf("Ordenação usada: NOME;\n");
     Funcionario *aux = fi->inicio;
     Funcionario *aux2;
 	char NOME[50];
@@ -199,14 +202,16 @@ void empilharC(pilhaC *pi, int num){
     c->placa = num;
     c->prox = pi->topo;
     pi->topo = c;
+    printf("Carro %d  entrou;\n", num);
 }
 
 void imprimir(pilhaC *pi){
     Carro *aux = pi->topo;
     if(aux == NULL){
-        printf("a pilha de carro está vazia !!\n");
+        printf("Estacionamento vazio!\n");
         return;
     }else{
+        printf("\n Lista de carros estacionados:\n");
          while(aux != NULL){
              printf("%d \n", aux->placa);
              aux = aux->prox;
@@ -225,36 +230,126 @@ int desempilhar(pilhaC *pi){
     }
 }
 
+//-----------------estrutura de empilha os carros na estradas e depois pôr na outra pilha---------------------------------------------
+
+struct car{
+    int plac;
+    struct car *proximo;
+};
+typedef struct car Car;
+
+struct pilha{
+    Car *TOPO;
+};
+
+typedef struct pilha pilha;
+
+pilha* CRIAR(){
+    pilha *p = (pilha*) malloc(sizeof(pilha));
+    if(p != NULL){
+        p->TOPO =NULL;
+    }
+    return p;
+}
+
+void EMPILHA(pilha *p, int num){
+    Car *ca = (Car*) malloc(sizeof(Carro));
+    ca->plac = num;
+    ca->proximo = p->TOPO;
+    p->TOPO = ca;
+}
+
+void IMPRIMI(pilha *p){
+    Car *aux = p->TOPO;
+    if(aux == NULL){
+        printf("a pilha de carro está vazia !!\n");
+        return;
+    }else{
+         while(aux != NULL){
+             printf("%d \n", aux->plac);
+             aux = aux->proximo;
+         }
+    }
+} 
+
+int DESEMPILHA(pilha *p){
+    Car *aux = p->TOPO;
+    //int placa;
+    if(aux == NULL){
+        return(printf("A pilha de carro já se encotra  vazio !!\n"));
+    }else{
+         p->TOPO = aux->proximo;
+        free(aux);
+    }
+}
+
 int main(){
 	Fila *fi;
 	pilhaC *pi;
 	fi = criaFila();
 	pi = criarPilha();
+    //INSERINDO FUNCIONARIO
 	InseriFila(fi,"alexandro", 1234, 24); 
 	InseriFila(fi, "alex", 5679, 26); 
 	InseriFila(fi, "sandro", 3461, 42); 
 	InseriFila(fi, "gol", 9870, 22); 
 	InseriFila(fi, "venom", 7569, 20);
-    ordenarNOME(fi);
-	ImprimeFila(fi);
-    liberaFila(fi);
- 	ImprimeFila(fi);
-	printf("\n");
-	printf("\n");
-	 empilharC(pi, 10);
+    ImprimeFila(fi);
+    //ORDENANDO A FILA DE FUNCIONÁRIO
+    ordenarID(fi);
+    //VERIFICANDO SE O ESTACIONAMENTO ESTA VÁZIO
+    imprimir(pi);
+    //ESTACIONANDO CARROS.
+	empilharC(pi, 10);
     empilharC(pi, 23);
     empilharC(pi, 33);
     empilharC(pi, 49);
+    //IMPRIMINDO A PILHA DE CARRROS
     imprimir(pi);
+    
+    // ESTA INCOMPLETO, MAS ESTA FUNCIONANDO
+/*
+    char nome[50];
+    int id;
+    int idade;
+    int placacarro;
+    int num;
     printf("\n");
-    printf("desempilhando o último\n",desempilhar(pi));
-    imprimir(pi);
-    printf("desempilhando o último\n",desempilhar(pi));
-    imprimir(pi);
-    printf("desempilhando o último\n",desempilhar(pi));
-    imprimir(pi);
-    printf("desempilhando o último\n",desempilhar(pi));
-    imprimir(pi);
-  printf("\n");
+
+   do{
+        printf( "1: Cadastrar Funcinário:\n"
+                "2: Lista de  funcionário:\n"
+                "3: Estacionar carro\n"
+                "4:  Lista de Carros\n"
+                "5: Imprimir Lista de Funcionários\n"
+                "6: Ordenar Lista de Funcionários\n"
+                "0: Sair\n");
+
+        scanf("%d", &num);
+
+        switch (num){
+                case 1:
+                    printf("digite o nome do funcionário\n");
+                    scanf("%s", nome);
+                    printf("digite o ID do funcionário\n");
+                    scanf("%d", &id);
+                    printf("digite a idade do funcionário\n");
+                    scanf("%d", &idade);
+                    InseriFila(fi, nome, id, idade); 
+                    break;
+                case 2:
+                    ImprimeFila(fi);
+                    break;
+                case 3:
+                    printf("digite a placa do carro para estacionar:");
+                    scanf("%d", &placacarro);
+                    empilharC(pi, placacarro);
+                break;
+                case 4: 
+                    imprimir(pi);
+                    break;
+         }
+   }while(num != 0);
+   */
 	return(0);
 }
