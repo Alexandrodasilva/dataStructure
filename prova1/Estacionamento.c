@@ -321,8 +321,6 @@ int main(){
                 "2: Lista de  funcionário:\n"
                 "3: Estacionar carro\n"
                 "4:  Lista de Carros\n"
-                "5: Imprimir Lista de Funcionários\n"
-                "6: Ordenar Lista de Funcionários\n"
                 "0: Sair\n");
 
         scanf("%d", &num);
