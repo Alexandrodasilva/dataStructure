@@ -17,9 +17,9 @@ arvore* criar(){
         R->raiz = NULL;
     }
     return(R);
-}
+}   
 
-void liberaNO(NO* no){
+void liberaNO(struct NO* no){
     if(no == NULL){
         return;
     }
@@ -28,16 +28,28 @@ void liberaNO(NO* no){
     free(no);
     no = NULL;
     
-}
+}if(r == NULL){
+        return (1);
+    }
 
 void libera_arvore(arvore* r){
     if(r == NULL){
         return;
-    }
     liberaNO(r); 
+    }
     free(r);
 }
-
+/*
+int arvoreVazia(arvore *r){
+    if(r == NULL){
+        return (1);
+    }
+    else if(*r == NULL){
+        return (1);
+    }
+    return(0);
+}
+*/
 int main(void){
     arvore *r;
     r = criar();
