@@ -29,6 +29,18 @@ void empilharC(pilhaC *pi, int num){
     printf("Carro %d  entrou;\n", num);
 }
 
+int buscarPilha(pilhaC *pi, int num){
+    Carro *aux = pi->topo;
+    if(aux == NULL){
+        printf("Estacionamento vazio!\n");
+        return;
+    }else{
+         while(num == aux){
+             printf(" %d encontrado na pilha\n", aux->placa);
+              aux = aux->prox;
+         }     
+    }
+}
 void imprimir(pilhaC *pi){
     Carro *aux = pi->topo;
     if(aux == NULL){
@@ -41,6 +53,7 @@ void imprimir(pilhaC *pi){
              aux = aux->prox;
          }
     }
+    return(pi);
 } 
 
 int desempilhar(pilhaC *pi){
@@ -60,4 +73,5 @@ int main(void){
     empilharC(pi, 23);
     empilharC(pi, 33);
     empilharC(pi, 49);
+    buscarPilha(pi, 33);
 }

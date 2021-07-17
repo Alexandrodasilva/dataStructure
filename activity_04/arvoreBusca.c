@@ -1,124 +1,150 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-struct NO{
-    int dados;
-    struct NO *esq;
-    struct NO *dir;
-};
 
-typedef struct  NO* arv;
 
-arv* criar(){
-    arv* R = (arv*) malloc(sizeof(arv));
-    if(R != NULL){
-        *R = NULL;
-    }
-    return(R);
-}   
+typedef struct arv{
+    int  number;
+    struct arv *esq;
+    struct arv *dir;
+}arvBusca;
 
-void liberaNO( struct NO* no){
-    if(no == NULL){
-        return;
-    }
-    liberaNO(no->esq); 
-    liberaNO(no->dir);
-    free(no);
-    no = NULL; 
+arvBusca* criarAvrBusca(){
+    return;
 }
 
-void libera_arvore(arv* r){
+arvBusca* inserirArvBusca(arvBusca *r, int num){
     if(r == NULL){
-        return;
+        r = (arvBusca*)malloc(sizeof(arvBusca));
+        r->number = num;
+        r->esq = NULL;
+        r->dir = NULL;
+       // printf("oiii");
     }
-    liberaNO(*r); 
-    free(r);
+    else if(num < r->number){
+        r->esq = inserirArvBusca(r->esq, num);
+    }else{
+        r->dir = inserirArvBusca(r->dir, num);
+    }
+    return(r);
 }
 
-void preOrdemArvBin(arv *r){   //RED
-    if(r == NULL){
-        return;
-    }
-    if(*r != NULL){
-        printf("%d\n", (*r)->dados);
-        preOrdemArvBin(&((*r)->esq));
-        preOrdemArvBin(&((*r)->dir)); 
+void destruirArvBusca(arvBusca *r){
+    if(r != NULL){
+        destruirArvBusca(r->esq);
+        destruirArvBusca(r->dir);
+        free(r);
     }
 }
-void OrdemArvBin(arv *r){   //ERD
-    if(r == NULL){
-        return;
-    }
-    if(*r != NULL){
-        OrdemArvBin(&((*r)->esq));
-        printf("%d\n", (*r)->dados);
-        OrdemArvBin(&((*r)->dir)); 
-    }
-}
-void posOrdemArvBin(arv *r){   //ERD
-    if(r == NULL){
-        return;
-    }
-    if(*r != NULL){
-        posOrdemArvBin(&((*r)->esq));
-        posOrdemArvBin(&((*r)->dir)); 
-        printf("%d\n", (*r)->dados);
-    }
-}
-int insercaoArvBusca(arv* r, int info){
 
-    if(r == NULL){
-        return 0;
-    }
-    struct NO* aux = (struct NO*) malloc(sizeof(struct NO)); // só para esquecer, mas o NO*  é para referenciar o tamnhanho do aux como ponteiro
-    if(aux  == NULL){
-        return 0;   
-    }
-    aux->dados =  info;
-    aux->dir = NULL;
-    aux->esq = NULL;
+ void preOrdem(arvBusca *r){
+     if(r != NULL){
+         printf("%d-", r->number);
+         preOrdem(r->esq);
+         preOrdem(r->dir);
+     }
+ }
 
-    if(*r == NULL){
-        *r = aux;
+ void emOrdem(arvBusca *r){
+     if(r != NULL){
+         preOrdem(r->esq);
+         printf("%d", r->number);
+         preOrdem(r->dir);
+     }
+ }
+
+ void posOrdem(arvBusca *r){
+     if(r != NULL){
+         preOrdem(r->esq);
+         preOrdem(r->dir);
+         printf("%d", r->number);
+     }
+ }
+
+void buscarArvBusca(arvBusca *r, int num, int n){
+    n++;
+    if(r == NULL){
+       return(printf("\nNão contem nessa estrutura!\n")); 
+    }
+    else if(num < r->number){
+        return(buscarArvBusca(r->esq, num, n));
+    }
+    else if(num > r->number){
+        return(buscarArvBusca(r->dir, num, n));
+    }else if(num == r->number){
+        return(printf("%d encontrado na arvore! E número de comprações é:%d\n", r->number, n));
+    }
+}
+
+arvBusca* removerArvBusca(arvBusca *r, int num){
+    if(r == NULL){
+        return;
     }
     else{
-        struct NO* atual = *r;
-        struct NO* ant = NULL;
-        while (atual != NULL)
-        {
-            ant = atual;
-            if(info == atual->dados){
-                free(aux);
-                return 0;
-            }
-            if(info > atual->dados){
-                atual = atual->dir;
-            }else{
-                atual = atual->esq;
-            }
+        if(r->number > num){
+            r->esq = removerArvBusca(r->esq, num);
         }
-        if(info > ant->dados){
-            ant->dir = aux;
+        else if(r->number < num){
+            r->dir = removerArvBusca(r->dir, num);
         }else{
-            ant->esq = aux;
+            if((r->esq== NULL) && (r->dir == NULL)){
+                free(r);
+                r = NULL;
+            }
+            else if(r->dir == NULL){
+                arvBusca *aux = r;
+                r = r->esq;
+                free(aux);
+            }
+            else if(r->esq == NULL){
+                arvBusca *aux = r;
+                r = r->dir;
+                free(aux);
+            }else{
+                arvBusca *aux = r->esq;
+                while (aux->dir != NULL){
+                   aux = aux->dir;
+                }
+                r->number = aux->number;
+                aux->number = num;
+                r->esq = removerArvBusca(r->esq, num);
+            }
         }
-    return 1;
+    }
+    return(r);
+}
+
+int alturaArvBusca(arvBusca *r){
+    if(r != NULL){
+        int x, y;
+        x = alturaArvBusca(r->esq);
+        y = alturaArvBusca(r->dir);
+        if(x<y){
+            return(y+1);
+        }else{
+            return(x+1);
+        }
+    }else{
+        return(0);
     }
 }
 
+int main(){
+    int  n = NULL;
+    arvBusca *r = criarAvrBusca();
+    r= inserirArvBusca(r, 10);
+    r= inserirArvBusca(r, 30);
+    r= inserirArvBusca(r, 9);
+    r= inserirArvBusca(r, 7);
+    r= inserirArvBusca(r, 40);
+    r= inserirArvBusca(r, 35);
 
-int main(void){
-    arv* r;
-    r = criar();
-    insercaoArvBusca(r, 10);
-    insercaoArvBusca(r, 7);
-    insercaoArvBusca(r, 23);
-    insercaoArvBusca(r, 22);
-    insercaoArvBusca(r, 9);
-    preOrdemArvBin(r);
-   printf("hello word\n");
-   posOrdemArvBin(r);
-   printf("hello word\n");
-   OrdemArvBin(r);
-    return(0);
+     preOrdem(r);
+     printf("\n");
+    buscarArvBusca(r, 30, n);
+    //removerArvBusca(r, 30);
+    printf("\n");
+    printf(" altura:%d",alturaArvBusca(r));
+    printf("\n");
+    return 0;
 }

@@ -174,8 +174,8 @@ void   ordenarNOME(Fila* fi){
 		
     }
     return(fi);
-	
 }
+
 int main(void){
     Fila *fi;
 	fi = criaFila();
